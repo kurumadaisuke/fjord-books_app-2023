@@ -1,5 +1,4 @@
 en:
-  newbook: New book  #g
   books: Books  #g
 
   activerecord:
@@ -13,9 +12,9 @@ en:
         picture: Picture  #g
         title: Title  #g
 
-  book:
-    button:
-      new: New book  #g
+  views:
+    action:
+      new: Create New book  #g
       show: Show this book  #g
       back: Back to books  #g
       edit: Edit this book  #g

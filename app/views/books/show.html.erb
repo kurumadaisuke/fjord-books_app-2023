@@ -5,7 +5,7 @@
 </div>
 
 <nav class="page-nav">
-  <%= link_to t("book.button.edit"), edit_book_path(@book) %> |
-  <%= link_to t("book.button.back"), books_path %>
-  <%= button_to t("book.button.delete"), @book, method: :delete %>
+  <%= link_to t("views.action.edit"), edit_book_path(@book) %> |
+  <%= link_to t("views.action.back"), books_path %>
+  <%= button_to t("views.action.delete"), @book, method: :delete %>
 </nav>

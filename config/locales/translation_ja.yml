@@ -1,5 +1,4 @@
 ja:
-  newbook: 新規作成  #g
   books: 書籍  #g
 
   activerecord:
@@ -13,8 +12,8 @@ ja:
         picture: 写真  #g
         title: タイトル  #g
 
-  book:
-    button:
+  views:
+    action:
       new: 新規登録  #g
       show: 詳細  #g
       back: 戻る  #g
