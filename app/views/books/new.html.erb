@@ -1,9 +1,9 @@
-<h1><%= t("views.action.new") %></h1>
+<h1><%= t("views.actions.new") %></h1>
 
 <%= render "form", book: @book %>
 
 <br>
 
 <nav class="page-nav">
-  <%= link_to t("views.action.back"), books_path %>
+  <%= link_to t("views.actions.back", resource_name: @resource_name), books_path %>
 </nav>

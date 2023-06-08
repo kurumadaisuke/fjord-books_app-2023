@@ -13,9 +13,9 @@ en:
         title: Title  #g
 
   views:
-    action:
-      new: Create New book  #g
-      show: Show this book  #g
-      back: Back to books  #g
-      edit: Edit this book  #g
-      delete: Destroy this book  #g
+    actions:
+      new: "Create New %{resource_name}"  #g
+      show: "Show this %{resource_name}" #g
+      back: "Back to %{resource_name}s"  #g
+      edit: "Edit this %{resource_name}"  #g
+      delete: "Destroy this %{resource_name}" #g

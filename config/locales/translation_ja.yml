@@ -13,7 +13,7 @@ ja:
         title: タイトル  #g
 
   views:
-    action:
+    actions:
       new: 新規登録  #g
       show: 詳細  #g
       back: 戻る  #g
