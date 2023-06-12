@@ -1,5 +1,19 @@
-<ul>
-  <% @users.each do |user| %>
-    <li><%= user.name %> | <%= link_to "このユーザー詳細を見る", "/users/#{user.id}", class: 'navbar-link' %></li>
-  <% end %>
-</ul>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ユーザー名</th>
+      <th>詳細情報</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td>
+          <%= link_to "ユーザー詳細を見る", "/users/#{user.id}", class: 'btn btn-primary' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate @users %>
