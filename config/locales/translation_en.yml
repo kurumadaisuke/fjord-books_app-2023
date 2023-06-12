@@ -1,0 +1,21 @@
+en:
+  books: Books  #g
+
+  activerecord:
+    models:
+      book: Book  #g
+
+    attributes:
+      book:
+        author: Author  #g
+        memo: Memo  #g
+        picture: Picture  #g
+        title: Title  #g
+
+  views:
+    actions:
+      new: "Create New %{resource_name}"  #g
+      show: "Show this %{resource_name}" #g
+      back: "Back to %{resource_name}s"  #g
+      edit: "Edit this %{resource_name}"  #g
+      delete: "Destroy this %{resource_name}" #g
