@@ -78,8 +78,7 @@ group :test do
   gem 'webdrivers'
 end
 
-gem 'carrierwave'
-gem 'i18n_generators'
-gem 'rails-i18n'
-gem 'kaminari'
 gem 'bootstrap'
+gem 'carrierwave'
+gem 'kaminari'
+gem 'rails-i18n'
