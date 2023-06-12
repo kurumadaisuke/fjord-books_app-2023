@@ -37,10 +37,3 @@
 /public/uploads
 
 .env
-
-config/locales/translation_ja.yml
-config/locales/translation_en.yml
-config/locales/ja.yml
-config/locales/en.yml
-config/initializers/locale.rb
-.vscode/launch.json
