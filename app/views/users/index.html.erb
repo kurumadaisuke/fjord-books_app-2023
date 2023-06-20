@@ -1,8 +1,8 @@
 <table class="table">
   <thead>
     <tr>
-      <th>ユーザー名</th>
-      <th>詳細情報</th>
+      <th><%= t("users.views.user_name") %></th>
+      <th><%= t("users.views.details") %></th>
     </tr>
   </thead>
   <tbody>
@@ -10,7 +10,7 @@
       <tr>
         <td><%= user.name %></td>
         <td>
-          <%= link_to "ユーザー詳細を見る", "/users/#{user.id}", class: 'btn btn-primary' %>
+          <%= link_to t("users.views.show_user_details"), "/users/#{user.id}", class: 'btn btn-primary' %>
         </td>
       </tr>
     <% end %>
