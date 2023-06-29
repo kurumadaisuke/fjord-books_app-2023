@@ -10,7 +10,7 @@
       <tr>
         <td><%= user.name %></td>
         <td>
-          <%= link_to t("users.views.show_user_details"), "/users/#{user.id}", class: 'btn btn-primary' %>
+          <%= link_to t("users.views.show_user_details"), user_path(user), class: 'btn btn-primary' %>
         </td>
       </tr>
     <% end %>

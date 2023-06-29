@@ -15,7 +15,7 @@
       <%= t("devise.sessions.new.logged_in_as") %> <strong><%= current_user.email %></strong>.
       <%= link_to t("users.views.profile_edit"), edit_user_registration_path, class: 'navbar-link' %> |
       <%= link_to t("devise.sessions.new.sign_out"), destroy_user_session_path, method: :delete, class: 'navbar-link' %> |
-      <%= link_to t("users.views.user_index"), users_index_path, class: 'navbar-link' %> |
+      <%= link_to t("users.views.user_index"), users_path, class: 'navbar-link' %> |
       <%= link_to t("users.views.book_index"), root_path, class: 'navbar-link' %>
     <% else %>
       <%= link_to t("devise.registrations.new.sign_up"), new_user_registration_path, class: 'navbar-link' %> |
