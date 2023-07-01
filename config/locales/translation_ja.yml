@@ -9,3 +9,18 @@ ja:
         memo: メモ
         picture: 画像
         title: タイトル
+      user:
+        name: ユーザー名
+        email: メールアドレス
+        postal_code: 郵便番号
+        address: 住所
+        profile: プロフィール
+
+  users:
+    views:
+      user_name: ユーザー名
+      user_index: ユーザー一覧
+      profile_edit: プロフィールの編集
+      details: 詳細情報
+      show_user_details: ユーザーの詳細情報を見る
+      book_index: 書籍情報一覧

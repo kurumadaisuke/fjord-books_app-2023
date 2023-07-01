@@ -1,0 +1,28 @@
+<div class="user-details show-item">
+  <h1><%= t("users.views.details") %></h1>
+
+  <div class="detail-item">
+    <h2><%= User.human_attribute_name('name') %></h2>
+    <p><%= @user.name %></p>
+  </div>
+
+  <div class="detail-item">
+    <h2><%= User.human_attribute_name('email') %></h2>
+    <p><%= @user.email %></p>
+  </div>
+
+  <div class="detail-item">
+    <h2><%= User.human_attribute_name('postal_code') %></h2>
+    <p><%= @user.postal_code %></p>
+  </div>
+
+  <div class="detail-item">
+    <h2><%= User.human_attribute_name('address') %></h2>
+    <p><%= @user.address %></p>
+  </div>
+
+  <div class="detail-item">
+    <h2><%= User.human_attribute_name('profile') %></h2>
+    <p><%= @user.profile %></p>
+  </div>
+</div>
