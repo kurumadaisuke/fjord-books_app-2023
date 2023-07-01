@@ -2,7 +2,6 @@
 
 class BooksController < ApplicationController
   before_action :set_book, only: %i[show edit update destroy]
-  before_action :set_commentable
 
   # GET /books or /books.json
   def index
@@ -12,6 +11,7 @@ class BooksController < ApplicationController
   # GET /books/1 or /books/1.json
   def show
     @comment = Comment.new
+    @comments = @book.comments
   end
 
   # GET /books/new
@@ -70,9 +70,5 @@ class BooksController < ApplicationController
   # Only allow a list of trusted parameters through.
   def book_params
     params.require(:book).permit(:title, :memo, :author, :picture)
-  end
-
-  def set_commentable
-    @commentable = Book.find(params[:book_id])
   end
 end
