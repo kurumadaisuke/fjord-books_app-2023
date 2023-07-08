@@ -9,6 +9,7 @@ class ReportsController < ApplicationController
 
   def show
     @report = Report.find(params[:id])
+    @mentions = Relationship.where(mention_id: params[:id]).order(id: :desc)
   end
 
   # GET /reports/new
@@ -22,12 +23,7 @@ class ReportsController < ApplicationController
     @report = current_user.reports.new(report_params)
 
     if @report.save
-      if @report.content.include?("http://localhost:3000")
-        mention_urls = @report.content.scan(/http:\/\/localhost:3000\/reports\/\d+/)
-        mention_urls.each do |url|
-          mention_id = url.split("/").last.to_i
-        end
-      end
+      mention_reports_create
       redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
     else
       render :new, status: :unprocessable_entity
@@ -36,6 +32,7 @@ class ReportsController < ApplicationController
 
   def update
     if @report.update(report_params)
+      mention_reports_update
       redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
     else
       render :edit, status: :unprocessable_entity
@@ -56,5 +53,26 @@ class ReportsController < ApplicationController
 
   def report_params
     params.require(:report).permit(:title, :content)
+  end
+
+  def mention_reports_create
+    if @report.content.include?("http://localhost:3000")
+      mention_urls = @report.content.scan(/http:\/\/localhost:3000\/reports\/\d+/).uniq
+      mention_urls.each do |url|
+        mention_id = url.split("/").last.to_i
+        mention = Relationship.new(report_id: @report.id, mention_id: mention_id)
+        mention.save
+      end
+    end
+  end
+
+  def mention_reports_update
+    if @report.content.include?("http://localhost:3000")
+      mention_urls = @report.content.scan(/http:\/\/localhost:3000\/reports\/\d+/).uniq
+      mention_urls.each do |url|
+        mention_id = url.split("/").last.to_i
+        Relationship.update(report_id: @report.id, mention_id: mention_id)
+      end
+    end
   end
 end
