@@ -22,6 +22,12 @@ class ReportsController < ApplicationController
     @report = current_user.reports.new(report_params)
 
     if @report.save
+      if @report.content.include?("http://localhost:3000")
+        mention_urls = @report.content.scan(/http:\/\/localhost:3000\/reports\/\d+/)
+        mention_urls.each do |url|
+          mention_id = url.split("/").last.to_i
+        end
+      end
       redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
     else
       render :new, status: :unprocessable_entity
