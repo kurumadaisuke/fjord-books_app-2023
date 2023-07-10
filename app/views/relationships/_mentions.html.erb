@@ -1,0 +1,6 @@
+<div>
+<h3>以下日報から言及されています</h3>
+    <% mentions.each do |mention| %>
+      <p><%= link_to mention.report.title, report_path(mention.report.id) %></p>
+    <% end %>
+</div>
