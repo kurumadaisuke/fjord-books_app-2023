@@ -13,10 +13,14 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    comment = Comment.find(params[:id])
-    comment.destroy
-    flash[:notice] = 'コメントを削除しました'
-    redirect_to book_path
+    if @report.user != current_user
+      redirect_to reports_path
+    else
+      comment = Comment.find(params[:id])
+      comment.destroy
+      flash[:notice] = 'コメントを削除しました'
+      redirect_to book_path
+    end
   end
 
   private
