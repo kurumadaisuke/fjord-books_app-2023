@@ -56,23 +56,23 @@ class ReportsController < ApplicationController
   end
 
   def mention_reports_create
-    if @report.content.include?("http://localhost:3000")
-      mention_urls = @report.content.scan(/http:\/\/localhost:3000\/reports\/\d+/).uniq
-      mention_urls.each do |url|
-        mention_id = url.split("/").last.to_i
-        mention = Relationship.new(report_id: @report.id, mention_id: mention_id)
-        mention.save
-      end
+    return unless @report.content.include?('http://localhost:3000')
+
+    mention_urls = @report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    mention_urls.each do |url|
+      id = url.split('/').last.to_i
+      mention = Relationship.new(report_id: @report.id, mention_id: id)
+      mention.save
     end
   end
 
   def mention_reports_update
-    if @report.content.include?("http://localhost:3000")
-      mention_urls = @report.content.scan(/http:\/\/localhost:3000\/reports\/\d+/).uniq
-      mention_urls.each do |url|
-        mention_id = url.split("/").last.to_i
-        Relationship.update(report_id: @report.id, mention_id: mention_id)
-      end
+    return unless @report.content.include?('http://localhost:3000')
+
+    mention_urls = @report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    mention_urls.each do |url|
+      id = url.split('/').last.to_i
+      Relationship.update(report_id: @report.id, mention_id: id)
     end
   end
 end
