@@ -14,17 +14,6 @@ class Books::CommentsController < ApplicationController
     end
   end
 
-  def destroy
-    comment = Comment.find(params[:id])
-    if comment.user != current_user
-      redirect_to comment_url
-    else
-      comment.destroy
-      flash[:notice] = 'コメントを削除しました'
-      redirect_to comment_url
-    end
-  end
-
   private
 
   def set_commentable
