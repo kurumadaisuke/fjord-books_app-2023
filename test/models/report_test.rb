@@ -22,9 +22,27 @@ class ReportTest < ActiveSupport::TestCase
   end
 
   test "save_mentions" do
-    no_mention_report = reports(:one)
-    mentions_report = reports(:two)
-    assert_equal [], no_mention_report.save_mentions
-    assert_equal [], mentions_report.save_mentions
+    no_mention_report = Report.create(
+      user: users(:alice),
+      title: "no_mention_report",
+      content: "no_mention_report"
+    )
+
+    one_mention_report = Report.create(
+      user: users(:alice),
+      title: "one_mention_report",
+      content: "http://localhost:3000/reports/#{no_mention_report.id}"
+    )
+
+    two_mention_report = Report.create(
+      user: users(:alice),
+      title: "two_mention_report",
+      content: "http://localhost:3000/reports/#{no_mention_report.id},
+                http://localhost:3000/reports/#{one_mention_report.id}"
+    )
+
+    assert_equal [],                                      no_mention_report.mentioning_reports
+    assert_equal [no_mention_report],                     one_mention_report.mentioning_reports
+    assert_equal [no_mention_report, one_mention_report], two_mention_report.mentioning_reports
   end
 end

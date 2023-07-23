@@ -7,5 +7,5 @@ one:
 
 two:
   title: 'bob_report'
-  content: 'http://localhost:3000/reports/1'
+  content: "http://localhost:3000/reports/#{no_mention_report.id}"
   user: bob
