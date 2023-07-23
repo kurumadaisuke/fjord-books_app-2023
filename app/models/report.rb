@@ -23,7 +23,7 @@ class Report < ApplicationRecord
     created_at.to_date
   end
 
-  private
+  # private
 
   MENTION_REGEXP = %r{http://localhost:3000/reports/(\d+)}
   def save_mentions
