@@ -9,7 +9,7 @@ class ReportsController < ApplicationController
 
   def show
     @report = Report.find(params[:id])
-    @mentions = Relationship.where(mention_id: params[:id]).order(id: :desc)
+    @mentions = ReportMention.where(mention_id: params[:id]).order(id: :desc)
   end
 
   # GET /reports/new
@@ -61,7 +61,7 @@ class ReportsController < ApplicationController
     mention_urls = @report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
     mention_urls.each do |url|
       id = url.split('/').last.to_i
-      mention = Relationship.new(report_id: @report.id, mention_id: id)
+      mention = ReportMention.new(report_id: @report.id, mention_id: id)
       mention.save
     end
   end
@@ -72,7 +72,7 @@ class ReportsController < ApplicationController
     mention_urls = @report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
     mention_urls.each do |url|
       id = url.split('/').last.to_i
-      Relationship.update(report_id: @report.id, mention_id: id)
+      ReportMention.update(report_id: @report.id, mention_id: id)
     end
   end
 end

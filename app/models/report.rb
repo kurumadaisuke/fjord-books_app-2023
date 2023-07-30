@@ -3,9 +3,9 @@
 class Report < ApplicationRecord
   belongs_to :user
   has_many :comments, as: :commentable, dependent: :destroy
-  has_many :relationships, dependent: :destroy
-  has_many :mentioning_reports, through: :relationships, source: :mention
-  has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: 'mention_id', dependent: :destroy, inverse_of: :mention
+  has_many :report_mention, dependent: :destroy
+  has_many :mentioning_reports, through: :report_mention, source: :mention
+  has_many :reverse_of_relationships, class_name: 'ReportMention', foreign_key: 'mention_id', dependent: :destroy, inverse_of: :mention
   has_many :mentioned_reports, through: :reverse_of_relationships, source: :report
 
   validates :title, presence: true
