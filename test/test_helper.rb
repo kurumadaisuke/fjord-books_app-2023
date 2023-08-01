@@ -13,7 +13,6 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
-  Webdrivers::Chromedriver.required_version = '114.0.5735.90'
 
   Capybara.configure do |config|
     config.default_driver = :selenium_chrome

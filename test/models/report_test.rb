@@ -6,12 +6,12 @@ class ReportTest < ActiveSupport::TestCase
   setup do
     @alice = users(:alice)
     @bob = users(:bob)
-    @alices_report = reports(:one)
-    @bobs_report = reports(:two)
+    @alices_report = reports(:alices_report)
+    @bobs_report = reports(:bob_report)
   end
 
   test 'editable?' do
-    assert_equal true, @alices_report.editable?(@alice)
+    assert, @alices_report.editable?(@alice)
     assert_equal false, @alices_report.editable?(@bob)
   end
 
@@ -36,12 +36,14 @@ class ReportTest < ActiveSupport::TestCase
     two_mention_report = Report.create(
       user: users(:alice),
       title: 'two_mention_report',
-      content: "http://localhost:3000/reports/#{no_mention_report.id},
-                http://localhost:3000/reports/#{one_mention_report.id}"
+      content: <<~TEXT
+        http://localhost:3000/reports/#{no_mention_report.id},
+        http://localhost:3000/reports/#{one_mention_report.id}
+        TEXT
     )
 
-    assert_equal [],                                      no_mention_report.mentioning_reports
-    assert_equal [no_mention_report],                     one_mention_report.mentioning_reports
+    assert_equal [], no_mention_report.mentioning_reports
+    assert_equal [no_mention_report], one_mention_report.mentioning_reports
     assert_equal [no_mention_report, one_mention_report], two_mention_report.mentioning_reports
   end
 

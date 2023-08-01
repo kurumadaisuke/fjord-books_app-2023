@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+alices_report:
   title: 'alices_report'
   content: 'alices_report'
   user: alice
 
-two:
+bob_report:
   title: 'bob_report'
   content: "http://localhost:3000/reports/#{no_mention_report.id}"
   user: bob
