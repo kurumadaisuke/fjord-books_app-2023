@@ -11,35 +11,35 @@ class ReportTest < ActiveSupport::TestCase
   end
 
   test 'editable?' do
-    assert, @alices_report.editable?(@alice)
+    assert @alices_report.editable?(@alice)
     assert_equal false, @alices_report.editable?(@bob)
   end
 
   test 'created_on' do
-    @alices_report.created_at = '2023-01-01 11:11'
-    assert_equal '2023-01-01 11:11'.to_date, @alices_report.created_on
+    @alices_report.created_at = Time.current
+    assert_equal Time.current.to_date, @alices_report.created_on
   end
 
   test 'save_mentions' do
-    no_mention_report = Report.create(
+    no_mention_report = @alice.reports.create!(
       user: users(:alice),
       title: 'no_mention_report',
       content: 'no_mention_report'
     )
 
-    one_mention_report = Report.create(
+    one_mention_report = @alice.reports.create!(
       user: users(:alice),
       title: 'one_mention_report',
       content: "http://localhost:3000/reports/#{no_mention_report.id}"
     )
 
-    two_mention_report = Report.create(
+    two_mention_report = @alice.reports.create!(
       user: users(:alice),
       title: 'two_mention_report',
       content: <<~TEXT
         http://localhost:3000/reports/#{no_mention_report.id},
         http://localhost:3000/reports/#{one_mention_report.id}
-        TEXT
+      TEXT
     )
 
     assert_equal [], no_mention_report.mentioning_reports
@@ -48,13 +48,13 @@ class ReportTest < ActiveSupport::TestCase
   end
 
   test 'update_save_mentions' do
-    no_mention_report = Report.create(
+    no_mention_report = @alice.reports.create!(
       user: users(:alice),
       title: 'no_mention_report',
       content: 'no_mention_report'
     )
 
-    default_report = Report.create(
+    default_report = @alice.reports.create!(
       user: users(:alice),
       title: 'default_report',
       content: 'default_report'
@@ -68,20 +68,22 @@ class ReportTest < ActiveSupport::TestCase
   end
 
   test 'delete_mentions' do
-    default_report = Report.create(
+    default_report = @alice.reports.create!(
       user: users(:alice),
       title: 'default_report',
       content: 'default_report'
     )
 
-    Report.create(
+    @alice.reports.create!(
       user: users(:alice),
       title: 'one_mention_report',
       content: "http://localhost:3000/reports/#{default_report.id}"
     )
 
+    has_report_mention = ReportMention.order(updated_at: :desc).limit(1)
+    assert has_report_mention
+
     default_report.destroy
-    deleted_report_mention = ReportMention.order(updated_at: :desc).limit(1)
-    assert_equal [], deleted_report_mention
+    assert_equal [], has_report_mention
   end
 end

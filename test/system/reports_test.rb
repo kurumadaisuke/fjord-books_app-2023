@@ -10,7 +10,7 @@ class ReportsTest < ApplicationSystemTestCase
     click_button 'ログイン'
     assert_text 'ログインしました。'
 
-    @report = reports(:one)
+    @report = reports(:alices_report)
   end
 
   test 'visiting the index' do
@@ -22,11 +22,13 @@ class ReportsTest < ApplicationSystemTestCase
     visit reports_url
     click_on '日報の新規作成'
 
-    fill_in 'タイトル', with: @report.title
-    fill_in '内容', with: @report.content
+    fill_in 'タイトル', with: 'フィヨルドブートキャンプ'
+    fill_in '内容', with: 'フィヨルドブートキャンプのプラクティスは難しい'
     click_on '登録する'
 
     assert_text '日報が作成されました。'
+    assert_text 'フィヨルドブートキャンプ'
+    assert_text 'フィヨルドブートキャンプのプラクティスは難しい'
     click_on '日報の一覧に戻る'
   end
 
@@ -34,8 +36,8 @@ class ReportsTest < ApplicationSystemTestCase
     visit report_url(@report)
     click_on 'この日報を編集', match: :first
 
-    fill_in 'タイトル', with: 'UPDATE'
-    fill_in '内容', with: 'UPDATE'
+    fill_in 'タイトル', with: 'フィヨルドブートキャンプ改定'
+    fill_in '内容', with: 'フィヨルドブートキャンプのプラクティスを改定しました。'
     click_on '更新する'
 
     assert_text '日報が更新されました。'
@@ -44,8 +46,11 @@ class ReportsTest < ApplicationSystemTestCase
 
   test 'should destroy Report' do
     visit report_url(@report)
+    assert_text 'alices_report'
     click_on 'この日報を削除', match: :first
 
     assert_text '日報が削除されました。'
+    assert_no_text 'alices_report'
+    assert_selector 'h1', text: '日報の一覧'
   end
 end
