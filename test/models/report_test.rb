@@ -74,7 +74,7 @@ class ReportTest < ActiveSupport::TestCase
       content: 'default_report'
     )
 
-    mentioned_report = @alice.reports.create!(
+    @alice.reports.create!(
       user: users(:alice),
       title: 'one_mention_report',
       content: "http://localhost:3000/reports/#{default_report.id}"
