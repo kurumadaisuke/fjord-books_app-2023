@@ -13,7 +13,4 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 
-  Capybara.configure do |config|
-    config.default_driver = :selenium_chrome
-  end
 end

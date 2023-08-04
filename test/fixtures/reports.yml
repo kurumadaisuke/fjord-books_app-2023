@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 alices_report:
-  title: 'alices_report'
-  content: 'alices_report'
+  title: '今日の日報(アリス)'
+  content: 'プラクティスを1つ進めた'
   user: alice
 
 bob_report:
-  title: 'bob_report'
-  content: "http://localhost:3000/reports/#{no_mention_report.id}"
+  title: '今日の日報(ボブ)'
+  content: "プラクティスを1つクリアした。日報を参考にした。http://localhost:3000/reports/#{no_mention_report.id}"
   user: bob
