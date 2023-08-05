@@ -74,17 +74,17 @@ class ReportTest < ActiveSupport::TestCase
       content: 'default_report'
     )
 
-    @alice.reports.create!(
+    mention_report = @alice.reports.create!(
       user: users(:alice),
       title: 'one_mention_report',
       content: "http://localhost:3000/reports/#{default_report.id}"
     )
 
-    mentioned_by_id = ReportMention.last.mentioned_by_id
+    mentioned_by_id = ReportMention.find_by(mention_to_id: mention_report.id).mentioned_by_id
     assert_equal default_report.id, mentioned_by_id
 
     default_report.destroy
-    check_report_mention = ReportMention.last
+    check_report_mention = ReportMention.find_by(mention_to_id: mention_report.id)
     assert_nil check_report_mention
   end
 end
