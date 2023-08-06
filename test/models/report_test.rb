@@ -80,11 +80,8 @@ class ReportTest < ActiveSupport::TestCase
       content: "http://localhost:3000/reports/#{default_report.id}"
     )
 
-    mentioned_by_id = ReportMention.find_by(mention_to_id: mention_report.id).mentioned_by_id
-    assert_equal default_report.id, mentioned_by_id
-
-    default_report.destroy
-    check_report_mention = ReportMention.find_by(mention_to_id: mention_report.id)
-    assert_nil check_report_mention
+    assert_includes default_report.mentioned_reports, mention_report
+    mention_report.destroy
+    assert_not_includes default_report.mentioned_reports, mention_report
   end
 end
