@@ -80,8 +80,9 @@ class ReportTest < ActiveSupport::TestCase
       content: "http://localhost:3000/reports/#{default_report.id}"
     )
 
-    assert_includes default_report.mentioned_reports, mention_report
+    assert_equal [mention_report], default_report.mentioned_reports
     mention_report.destroy
-    assert_not_includes default_report.mentioned_reports, mention_report
+    default_report.reload
+    assert_equal [], default_report.mentioned_reports
   end
 end
