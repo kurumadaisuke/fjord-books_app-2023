@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user: one
-  title: MyString
-  content: MyText
+alices_report:
+  title: '今日の日報(アリス)'
+  content: 'プラクティスを1つ進めた'
+  user: alice
 
-two:
-  user: two
-  title: MyString
-  content: MyText
+bob_report:
+  title: '今日の日報(ボブ)'
+  content: "プラクティスを1つクリアした。日報を参考にした。http://localhost:3000/reports/#{no_mention_report.id}"
+  user: bob
