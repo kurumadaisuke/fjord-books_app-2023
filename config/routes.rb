@@ -14,5 +14,4 @@ Rails.application.routes.draw do
   end
   resources :comments, only: :destroy
   resources :users, only: %i(index show)
-  resources :relationships
 end
