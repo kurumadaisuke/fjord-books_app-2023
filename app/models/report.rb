@@ -6,8 +6,8 @@ class Report < ApplicationRecord
 
   has_many :report_mention, dependent: :destroy
   has_many :mentioning_reports, through: :report_mention, source: :mention
-  has_many :mentioned_reports_relationships, class_name: 'ReportMention', foreign_key: 'mention_id', dependent: :destroy, inverse_of: :mention
-  has_many :mentioned_reports, through: :mentioned_reports_relationships, source: :report
+  has_many :mentioned_reports, class_name: 'ReportMention', foreign_key: 'mention_id', dependent: :destroy, inverse_of: :mention
+  has_many :mentioned_reports, through: :mentioned_reports, source: :report
 
   validates :title, presence: true
   validates :content, presence: true
