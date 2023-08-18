@@ -23,7 +23,7 @@ class ReportsController < ApplicationController
     @report = current_user.reports.new(report_params)
 
     if @report.save!
-      @report.mention_reports_create
+      mention_reports_create
       redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
     else
       render :new, status: :unprocessable_entity
@@ -56,16 +56,16 @@ class ReportsController < ApplicationController
     params.require(:report).permit(:title, :content)
   end
 
-  # def mention_reports_create
-  #   return unless @report.content.include?('http://localhost:3000')
+  def mention_reports_create
+    return unless @report.content.include?('http://localhost:3000')
 
-  #   mention_urls = @report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
-  #   mention_urls.each do |url|
-  #     id = url.split('/').last.to_i
-  #     mention = ReportMention.new(report_id: @report.id, mention_id: id)
-  #     mention.save
-  #   end
-  # end
+    mention_urls = @report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    mention_urls.each do |url|
+      id = url.split('/').last.to_i
+      mention = ReportMention.new(report_id: @report.id, mention_id: id)
+      mention.save
+    end
+  end
 
   def mention_reports_update
     return unless @report.content.include?('http://localhost:3000')
