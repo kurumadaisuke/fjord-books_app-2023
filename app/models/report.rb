@@ -28,8 +28,8 @@ class Report < ApplicationRecord
 
     mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
     mention_urls.each do |url|
-      mention_id = url.split('/').last.to_i
-      mention = ReportMention.new(report_id: id, mention_id: mention_id)
+      mention_report_id = url.split('/').last.to_i
+      mention = ReportMention.new(report_id: id, mention_id: mention_report_id)
       mention.save
     end
   end
@@ -39,9 +39,8 @@ class Report < ApplicationRecord
 
     mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
     mention_urls.each do |url|
-      mention_id = url.split('/').last.to_i
-      ReportMention.update(report_id: id, mention_id: mention_id)
+      mention_report_id = url.split('/').last.to_i
+      ReportMention.update(report_id: id, mention_id: mention_report_id)
     end
   end
-
 end
