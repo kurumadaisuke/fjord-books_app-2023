@@ -23,7 +23,7 @@ class ReportsController < ApplicationController
     @report = current_user.reports.new(report_params)
 
     if @report.save!
-      mention_reports_create
+      @report.mention_reports_create
       redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
     else
       render :new, status: :unprocessable_entity
@@ -32,11 +32,10 @@ class ReportsController < ApplicationController
 
   def update
       if @report.update!(report_params)
-        mention_reports_update
+        @report.mention_reports_update
         redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
       else
         render :edit, status: :unprocessable_entity
-        raise ActiveRecord::Rollback
       end
   end
 
@@ -54,26 +53,5 @@ class ReportsController < ApplicationController
 
   def report_params
     params.require(:report).permit(:title, :content)
-  end
-
-  def mention_reports_create
-    return unless @report.content.include?('http://localhost:3000')
-
-    mention_urls = @report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
-    mention_urls.each do |url|
-      id = url.split('/').last.to_i
-      mention = ReportMention.new(report_id: @report.id, mention_id: id)
-      mention.save
-    end
-  end
-
-  def mention_reports_update
-    return unless @report.content.include?('http://localhost:3000')
-
-    mention_urls = @report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
-    mention_urls.each do |url|
-      id = url.split('/').last.to_i
-      ReportMention.update(report_id: @report.id, mention_id: id)
-    end
   end
 end

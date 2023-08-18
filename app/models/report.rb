@@ -6,8 +6,8 @@ class Report < ApplicationRecord
 
   has_many :report_mention, dependent: :destroy
   has_many :mentioning_reports, through: :report_mention, source: :mention
-  has_many :mentioned_reports, class_name: 'ReportMention', foreign_key: 'mention_id', dependent: :destroy, inverse_of: :mention
-  has_many :mentioned_reports, through: :mentioned_reports, source: :report
+  has_many :mention_targets, class_name: 'ReportMention', foreign_key: 'mention_id', dependent: :destroy, inverse_of: :mention
+  has_many :mentioned_reports, through: :mention_targets, source: :report
 
   validates :title, presence: true
   validates :content, presence: true
@@ -19,4 +19,26 @@ class Report < ApplicationRecord
   def created_on
     created_at.to_date
   end
+
+  def mention_reports_create
+    return unless content.include?('http://localhost:3000')
+
+    mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    mention_urls.each do |url|
+      mention_id = url.split('/').last.to_i
+      mention = ReportMention.new(report_id: id, mention_id: mention_id)
+      mention.save
+    end
+  end
+
+  def mention_reports_update
+    return unless content.include?('http://localhost:3000')
+
+    mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    mention_urls.each do |url|
+      mention_id = url.split('/').last.to_i
+      ReportMention.update(report_id: id, mention_id: mention_id)
+    end
+  end
+
 end
