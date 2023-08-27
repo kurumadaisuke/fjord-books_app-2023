@@ -24,23 +24,23 @@ class Report < ApplicationRecord
   end
 
   def mention_reports_create
-    Report.transaction do
-      return unless content.include?('http://localhost:3000')
+    return unless content.include?('http://localhost:3000')
 
-      mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    Report.transaction do
       mention_urls.each do |url|
-        mention_report_id = url.split('/').last.to_i
-        mention = ReportMention.new(report_id: id, mention_id: mention_report_id)
-        mention.save!
-      end
+          mention_report_id = url.split('/').last.to_i
+          mention = ReportMention.new(report_id: id, mention_id: mention_report_id)
+          mention.save!
+        end
     end
   end
 
   def mention_reports_update
-    Report.transaction do
-      return unless content.include?('http://localhost:3000')
+    return unless content.include?('http://localhost:3000')
 
-      mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    Report.transaction do
       mention_urls.each do |url|
         mention_report_id = url.split('/').last.to_i
         ReportMention.update!(report_id: id, mention_id: mention_report_id)
