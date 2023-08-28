@@ -12,8 +12,7 @@ class Report < ApplicationRecord
   validates :title, presence: true
   validates :content, presence: true
 
-  after_create :mention_reports_create
-  after_update :mention_reports_update
+  # after_update :mention_reports_update
 
   def editable?(target_user)
     user == target_user
@@ -23,27 +22,35 @@ class Report < ApplicationRecord
     created_at.to_date
   end
 
-  def mention_reports_create
-    return unless content.include?('http://localhost:3000')
+  def self.create_report_with_mentions(user, report_params)
+    report = user.reports.new(report_params)
 
-    mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
     Report.transaction do
-      mention_urls.each do |url|
+      raise ActiveRecord::Rollback unless report.save!
+
+      if report.content.include?('http://localhost:3000')
+        mention_urls = report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+        mention_urls.each do |url|
           mention_report_id = url.split('/').last.to_i
-          mention = ReportMention.new(report_id: id, mention_id: mention_report_id)
-          mention.save!
+          mention = ReportMention.new(report_id: report.id, mention_id: mention_report_id)
+          raise ActiveRecord::Rollback unless mention.save
         end
+      end
     end
+
+    report
   end
 
-  def mention_reports_update
-    return unless content.include?('http://localhost:3000')
-
-    mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+  def self.update_report_with_mentions(report, report_params)
     Report.transaction do
-      mention_urls.each do |url|
-        mention_report_id = url.split('/').last.to_i
-        ReportMention.update!(report_id: id, mention_id: mention_report_id)
+      raise ActiveRecord::Rollback unless report.update!(report_params)
+
+      if report.content.include?('http://localhost:3000')
+        mention_urls = report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+        mention_urls.each do |url|
+          mention_report_id = url.split('/').last.to_i
+          ReportMention.update!(report_id: report.id, mention_id: mention_report_id)
+        end
       end
     end
   end
