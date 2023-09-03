@@ -12,8 +12,6 @@ class Report < ApplicationRecord
   validates :title, presence: true
   validates :content, presence: true
 
-  # after_update :mention_reports_update
-
   def editable?(target_user)
     user == target_user
   end
@@ -22,36 +20,33 @@ class Report < ApplicationRecord
     created_at.to_date
   end
 
-  def self.create_report_with_mentions(user, report_params)
-    report = user.reports.new(report_params)
-
+  def create_with_mentions
     Report.transaction do
-      raise ActiveRecord::Rollback unless report.save!
-
-      if report.content.include?('http://localhost:3000')
-        mention_urls = report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
-        mention_urls.each do |url|
-          mention_report_id = url.split('/').last.to_i
-          mention = ReportMention.new(report_id: report.id, mention_id: mention_report_id)
-          raise ActiveRecord::Rollback unless mention.save
-        end
-      end
+      content.include?('http://localhost:3000') ? save && create_mentions : save
     end
-
-    report
   end
 
-  def self.update_report_with_mentions(report, report_params)
-    Report.transaction do
-      raise ActiveRecord::Rollback unless report.update!(report_params)
-
-      if report.content.include?('http://localhost:3000')
-        mention_urls = report.content.scan(%r{http://localhost:3000/reports/\d+}).uniq
-        mention_urls.each do |url|
-          mention_report_id = url.split('/').last.to_i
-          ReportMention.update!(report_id: report.id, mention_id: mention_report_id)
-        end
+  def create_mentions
+    mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
+    ReportMention.transaction do
+      mention_urls.each do |url|
+        mention_report_id = url.split('/').last.to_i
+        mention = ReportMention.new(report_id: id, mention_id: mention_report_id)
+        mention.save
       end
+    end
+  end
+
+  def update_with_mentions(report_params)
+    Report.transaction do
+      content.include?('http://localhost:3000') ? update(report_params) && update_mentions : update(report_params)
+    end
+  end
+
+  def update_mentions
+    ReportMention.transaction do
+      ReportMention.where(report_id: id).destroy_all
+      create_mentions
     end
   end
 end

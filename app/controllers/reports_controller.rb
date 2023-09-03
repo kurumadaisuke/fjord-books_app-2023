@@ -20,9 +20,9 @@ class ReportsController < ApplicationController
   def edit; end
 
   def create
-    @report = Report.create_report_with_mentions(current_user, report_params)
+    @report = current_user.reports.new(report_params)
 
-    if @report.persisted?
+    if @report.create_with_mentions
       redirect_to @report, notice: t('controllers.common.notice_create', name: Report.model_name.human)
     else
       render :new, status: :unprocessable_entity
@@ -30,7 +30,7 @@ class ReportsController < ApplicationController
   end
 
   def update
-    if Report.update_report_with_mentions(@report, report_params)
+    if @report.update_with_mentions(report_params)
       redirect_to @report, notice: t('controllers.common.notice_update', name: Report.model_name.human)
     else
       render :edit, status: :unprocessable_entity
