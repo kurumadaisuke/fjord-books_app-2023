@@ -28,12 +28,10 @@ class Report < ApplicationRecord
 
   def create_mentions
     mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
-    ReportMention.transaction do
-      mention_urls.each do |url|
-        mention_report_id = url.split('/').last.to_i
-        mention = ReportMention.new(report_id: id, mention_id: mention_report_id)
-        mention.save
-      end
+    mention_urls.each do |url|
+      mention_report_id = url.split('/').last.to_i
+      mention = ReportMention.new(report_id: id, mention_id: mention_report_id)
+      mention.save
     end
   end
 
@@ -44,9 +42,7 @@ class Report < ApplicationRecord
   end
 
   def update_mentions
-    ReportMention.transaction do
-      ReportMention.where(report_id: id).destroy_all
-      create_mentions
-    end
+    ReportMention.where(report_id: id).destroy_all
+    create_mentions
   end
 end
