@@ -21,12 +21,12 @@ class Report < ApplicationRecord
   end
 
   def create_with_mentions
-    Report.transaction do
-      content.include?('http://localhost:3000') ? save && create_mentions : save
+    transaction do
+      save && save_mentions
     end
   end
 
-  def create_mentions
+  def save_mentions
     mention_urls = content.scan(%r{http://localhost:3000/reports/\d+}).uniq
     mention_urls.each do |url|
       mention_report_id = url.split('/').last.to_i
@@ -36,13 +36,13 @@ class Report < ApplicationRecord
   end
 
   def update_with_mentions(report_params)
-    Report.transaction do
-      content.include?('http://localhost:3000') ? update(report_params) && update_mentions : update(report_params)
+    transaction do
+      update(report_params) && update_mentions
     end
   end
 
   def update_mentions
     ReportMention.where(report_id: id).destroy_all
-    create_mentions
+    save_mentions
   end
 end
